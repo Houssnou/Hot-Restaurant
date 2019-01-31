@@ -39,27 +39,27 @@ app.get("/api/waitlist", (req, res) => {
 
 //post api
 app.post("/api/tables", (req, res) => {
-
   console.log("req.body:", req.body);
   //check how many tables are seated
   //let isWaiting;
-  cnx.query("SELECT count(*) FROM tables where isWaiting = 0 having count(isWaiting)>5", (err, availability) => {
+  cnx.query("SELECT count(*) as number FROM tables where isWaiting = 0 ", (err, availability) => {
     //if there is not data then proceed to the following
     if (err) {
       console.log("Here: "+err);
       res.status(400).json(err);
     };
+
     //determines the value of isWaiting
-    req.body.isWaiting=(!availability) ? 1 : 0;
-    //insert the new table
+    req.body.isWaiting=(availability[0].number>5) ? 1 : 0;
+
+     //insert the new table
     cnx.query("INSERT INTO tables SET ?", req.body, (err, result) => {
       if (err) {
         console.log("There: "+err);
         res.status(400).json(err);
-      };
-  
+      };  
       res.json(result);
-    });
+    }); 
   });  
 
 });
