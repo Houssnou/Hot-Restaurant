@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+  <link rel="stylesheet" href="style.css">
+  <title>Hot Restaurant</title>
+</head>
+
+<body>
+  <div class="container">
+    <!-- logo -->
+    <div class="jumbotron text-center bg-dark text-light my-4">
+      <h1 class="display-4">Hot restaurant</h1>
+      <p class="lead">Awesome activity to "master" express/node.js</p>
+      <hr class="my-4">
+      <p>Book your seat right now!!!</p>
+      <a class="btn btn-primary btn-lg" href="./" role="button">Home</a>
+      <a class="btn btn-danger btn-lg" href="./reserve" role="button">Make a reservation</a>
+    </div>
+
+    <!-- reservation -->
+    <div class="card alert-success">
+      <div class="card-header">
+        Reservations
+      </div>
+      <div class="card-body" id="reservations">
+        <!-- content generated automatically -->
+
+      </div>
+    </div>
+
+    <!-- waiting list -->
+    <div class="card my-4 alert-danger">
+      <div class="card-header">
+        Waiting List
+      </div>
+      <div class="card-body" id="waitlist">
+        <!-- content generated automatically -->
+      </div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.0/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script src="../javascript/app.js"></script>
+  <script type="text/javascript">
+    // call the API tables
+    $.ajax({
+        url: "/api/tables",
+        method: "GET"
+      })
+      .then(function (reservations) {
+        console.log(reservations);
+        for (var i = 0; i < reservations.length; i++) {
+
+          //build the content of reservations 
+          const $card = $("<card>");
+          // card header
+          var $cardHeader = $("<h4 class='card-header bg-dark text-light'>")
+            .text(`table #${i}`)
+            .appendTo($card);
+
+          // article body
+          var $cardBody = $("<div class='card-body'>");
+          $cardBody
+            .append(`<p> Name: ${reservations[i].name}</p>`)
+            .append(`<p> Email: ${reservations[i].email}</p>`)
+            .append(`<p> Phone: ${reservations[i].phone}</p>`)
+            .appendTo($card);
+
+          //append whole card to the reservations
+          $("#reservations").append($card);
+        }
+      });
+    // call the API Waitlist
+    $.ajax({
+        url: "/api/waitlist",
+        method: "GET"
+      })
+      .then(function (waitlist) {
+        console.log(waitlist);
+        for (var i = 0; i < waitlist.length; i++) {
+          //build the content of the waitlist 
+          const $card = $("<card>");
+          // card header
+          var $cardHeader = $("<h4 class='card-header bg-dark text-light'>")
+            .text(`table #${i}`)
+            .appendTo($card);
+
+          // article body
+          var $cardBody = $("<div class='card-body'>");
+          $cardBody
+            .append(`<p> Name: ${waitlist[i].name}</p>`)
+            .append(`<p> Email: ${waitlist[i].email}</p>`)
+            .append(`<p> Phone: ${waitlist[i].phone}</p>`)
+            .appendTo($card);
+
+          //append whole card to the reservations
+          $("#waitlist").append($card);
+        }
+      });
+  </script>
+</body>
+
+</html>

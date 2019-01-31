@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+  <link rel="stylesheet" href="style.css">
+  <title>Hot Restaurant</title>
+</head>
+
+<body>
+  <div class="container">
+    <!-- logo -->
+    <div class="jumbotron text-center bg-dark text-light my-4">
+      <h1 class="display-4">Hot restaurant</h1>
+      <p class="lead">Awesome activity to "master" express/node.js</p>
+      <hr class="my-4">
+      <p>Book your seat right now!!!</p>
+      <a class="btn btn-primary btn-lg" href="./tables" role="button">View tables</a>
+      <a class="btn btn-danger btn-lg" href="./" role="button">Home</a>
+    </div>
+
+    <!-- content -->
+    <div class="card mb-4 border-dark">
+      <div class="card-header bg-dark text-light">
+        Add a reservation
+      </div>
+      <div class="card-body border-dark mb-3">
+        <form role="form">
+          <!-- <div class="form-group">
+            <label for="name-input">Account ID:</label>
+            <input class="form-control" id="account-input" type="text">
+          </div> -->
+          <div class="form-group">
+            <label for="name-input">Name:</label>
+            <input class="form-control" id="name-input" type="text">
+          </div>
+          <div class="form-group">
+            <label for="role-input">Email:</label>
+            <input class="form-control" id="email-input" type="text">
+          </div>
+          <div class="form-group">
+            <label for="role-input">Phone Number:</label>
+            <input class="form-control" id="phone-input" type="text">
+          </div>
+          <div class="form-group text-right">
+            <button class="btn btn-outline-primary btn-lg" id="add-reservation" type="submit">Submit</button>
+            <button class="btn btn-outline-secondary btn-lg" id="reset-reservation" type="reset">Reset</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  <!--  -->
+
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.0/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+    //listener of on click event
+    $("#add-reservation").on("click", function (event) {
+      //avoid reaload page
+      event.preventDefault();
+      //account-input
+      const newReservation = {
+        name: $("#name-input").val().trim(),
+        email: $("#email-input").val().trim(),
+        phone: $("#phone-input").val().trim(),
+        isWaiting: 1 //by default ew reservation isWaiting = 1
+      };
+
+      console.log(newReservation);
+      // request post with the data
+      $.ajax({
+          url: "/api/tables",
+          method: "POST",
+          data: newReservation
+        })
+        .then(function (data) {
+          alert("Reservation saved!");
+          //clear the input fields
+          $("#name-input").val("");
+          $("#email-input").val("");
+          $("#phone-input").val("");
+          $("#account-input").val("");
+        });
+    });
+  </script>
+</body>
+</html>
